@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { recipes } from "@/data/recipes";
+import { recipes, mealTimes } from "@/data/recipes";
 import CategoryFilter from "@/components/CategoryFilter";
 import RecipeCard from "@/components/RecipeCard";
 import FeaturedRecipes from "@/components/FeaturedRecipes";
@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeMealTime, setActiveMealTime] = useState("All");
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
   const location = useLocation();
 
@@ -34,11 +35,20 @@ const Index = () => {
       filtered = filtered.filter(recipe => recipe.category === activeCategory);
     }
     
+    // Apply meal time filter unless it's "All"
+    if (activeMealTime !== "All") {
+      filtered = filtered.filter(recipe => recipe.mealTime === activeMealTime);
+    }
+    
     setFilteredRecipes(filtered);
-  }, [activeCategory, location.search]);
+  }, [activeCategory, activeMealTime, location.search]);
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
+  };
+
+  const handleMealTimeChange = (mealTime: string) => {
+    setActiveMealTime(mealTime);
   };
 
   return (
@@ -70,7 +80,9 @@ const Index = () => {
         
         <CategoryFilter 
           activeCategory={activeCategory} 
+          activeMealTime={activeMealTime}
           onCategoryChange={handleCategoryChange} 
+          onMealTimeChange={handleMealTimeChange}
         />
         
         {filteredRecipes.length > 0 ? (
@@ -83,7 +95,10 @@ const Index = () => {
           <div className="text-center py-12">
             <p className="text-recipe-dark/80 text-lg mb-4">No recipes found.</p>
             <button 
-              onClick={() => setActiveCategory("All")}
+              onClick={() => {
+                setActiveCategory("All");
+                setActiveMealTime("All");
+              }}
               className="button-primary"
             >
               View All Recipes
