@@ -1,4 +1,3 @@
-
 export interface Recipe {
   id: string;
   title: string;
@@ -14,6 +13,12 @@ export interface Recipe {
   mealTime?: "Breakfast" | "Lunch" | "Dinner" | "Snack" | "Dessert";
   featured?: boolean;
   likes?: number;
+  nutritionalInfo?: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
 }
 
 export const recipes: Recipe[] = [
@@ -51,7 +56,13 @@ export const recipes: Recipe[] = [
     category: "Italian",
     mealTime: "Dinner",
     featured: true,
-    likes: 24
+    likes: 24,
+    nutritionalInfo: {
+      calories: 320,
+      protein: 14,
+      carbs: 42,
+      fat: 12
+    }
   },
   {
     id: "2",
@@ -93,7 +104,13 @@ export const recipes: Recipe[] = [
     category: "Soups",
     mealTime: "Lunch",
     featured: true,
-    likes: 16
+    likes: 16,
+    nutritionalInfo: {
+      calories: 210,
+      protein: 3,
+      carbs: 25,
+      fat: 13
+    }
   },
   {
     id: "3",
@@ -134,7 +151,13 @@ export const recipes: Recipe[] = [
     category: "Desserts",
     mealTime: "Dessert",
     featured: true,
-    likes: 32
+    likes: 32,
+    nutritionalInfo: {
+      calories: 410,
+      protein: 6,
+      carbs: 38,
+      fat: 26
+    }
   },
   {
     id: "4",
@@ -170,7 +193,13 @@ export const recipes: Recipe[] = [
     ],
     category: "Salads",
     mealTime: "Lunch",
-    likes: 19
+    likes: 19,
+    nutritionalInfo: {
+      calories: 180,
+      protein: 7,
+      carbs: 12,
+      fat: 13
+    }
   },
   {
     id: "5",
@@ -211,7 +240,13 @@ export const recipes: Recipe[] = [
     ],
     category: "Asian",
     mealTime: "Dinner",
-    likes: 28
+    likes: 28,
+    nutritionalInfo: {
+      calories: 350,
+      protein: 28,
+      carbs: 15,
+      fat: 20
+    }
   },
   {
     id: "6",
@@ -254,7 +289,13 @@ export const recipes: Recipe[] = [
     ],
     category: "Baking",
     mealTime: "Breakfast",
-    likes: 21
+    likes: 21,
+    nutritionalInfo: {
+      calories: 280,
+      protein: 5,
+      carbs: 30,
+      fat: 16
+    }
   }
 ];
 

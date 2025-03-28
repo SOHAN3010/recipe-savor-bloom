@@ -1,6 +1,8 @@
 
 import { Recipe } from "@/data/recipes";
 import { Clock, Users } from "lucide-react";
+import LikeButton from "./LikeButton";
+import NutritionalInfo from "./NutritionalInfo";
 
 interface RecipeHeaderProps {
   recipe: Recipe;
@@ -22,32 +24,48 @@ const RecipeHeader = ({ recipe }: RecipeHeaderProps) => {
         </div>
       </div>
       
-      <h1 className="text-3xl md:text-4xl font-heading font-bold text-recipe-secondary mb-4">
-        {recipe.title}
-      </h1>
+      <div className="flex justify-between items-start">
+        <h1 className="text-3xl md:text-4xl font-heading font-bold text-recipe-secondary mb-4">
+          {recipe.title}
+        </h1>
+        <LikeButton recipe={recipe} size="lg" />
+      </div>
       
       <p className="text-lg text-recipe-dark/90 mb-6">{recipe.description}</p>
       
-      <div className="flex flex-wrap gap-y-3 gap-x-6 text-recipe-dark/80">
-        <div className="flex items-center">
-          <Clock className="mr-2" size={18} />
-          <span>Prep Time: {recipe.prepTime} minutes</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="flex flex-wrap gap-y-3 gap-x-6 text-recipe-dark/80">
+          <div className="flex items-center">
+            <Clock className="mr-2" size={18} />
+            <span>Prep Time: {recipe.prepTime} minutes</span>
+          </div>
+          
+          <div className="flex items-center">
+            <Clock className="mr-2" size={18} />
+            <span>Cook Time: {recipe.cookTime} minutes</span>
+          </div>
+          
+          <div className="flex items-center">
+            <Clock className="mr-2" size={18} />
+            <span>Total Time: {recipe.prepTime + recipe.cookTime} minutes</span>
+          </div>
+          
+          <div className="flex items-center">
+            <Users className="mr-2" size={18} />
+            <span>Servings: {recipe.servings}</span>
+          </div>
         </div>
         
-        <div className="flex items-center">
-          <Clock className="mr-2" size={18} />
-          <span>Cook Time: {recipe.cookTime} minutes</span>
-        </div>
-        
-        <div className="flex items-center">
-          <Clock className="mr-2" size={18} />
-          <span>Total Time: {recipe.prepTime + recipe.cookTime} minutes</span>
-        </div>
-        
-        <div className="flex items-center">
-          <Users className="mr-2" size={18} />
-          <span>Servings: {recipe.servings}</span>
-        </div>
+        {recipe.nutritionalInfo && (
+          <div>
+            <NutritionalInfo 
+              calories={recipe.nutritionalInfo.calories}
+              protein={recipe.nutritionalInfo.protein}
+              carbs={recipe.nutritionalInfo.carbs}
+              fat={recipe.nutritionalInfo.fat}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
