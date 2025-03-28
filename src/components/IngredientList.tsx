@@ -1,12 +1,18 @@
 
 import { useState } from "react";
+import IngredientSubstitution from "./IngredientSubstitution";
 
 interface IngredientListProps {
   ingredients: string[];
+  ingredientSubstitutions?: { [ingredient: string]: string[] };
   servings: number;
 }
 
-const IngredientList = ({ ingredients, servings }: IngredientListProps) => {
+const IngredientList = ({ 
+  ingredients, 
+  ingredientSubstitutions = {}, 
+  servings 
+}: IngredientListProps) => {
   const [checkedIngredients, setCheckedIngredients] = useState<{ [key: string]: boolean }>({});
   const [servingCount, setServingCount] = useState(servings);
   
@@ -75,6 +81,13 @@ const IngredientList = ({ ingredients, servings }: IngredientListProps) => {
             >
               {scaleIngredient(ingredient)}
             </label>
+            
+            {ingredientSubstitutions[ingredient] && (
+              <IngredientSubstitution 
+                ingredient={ingredient} 
+                substitutions={ingredientSubstitutions[ingredient]} 
+              />
+            )}
           </li>
         ))}
       </ul>

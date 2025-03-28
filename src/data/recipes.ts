@@ -8,9 +8,12 @@ export interface Recipe {
   cookTime: number;
   servings: number;
   ingredients: string[];
+  ingredientSubstitutions?: { [ingredient: string]: string[] };
   instructions: string[];
   category: string;
+  mealTime?: "Breakfast" | "Lunch" | "Dinner" | "Snack" | "Dessert";
   featured?: boolean;
+  likes?: number;
 }
 
 export const recipes: Recipe[] = [
@@ -30,6 +33,10 @@ export const recipes: Recipe[] = [
       "2 tablespoons olive oil",
       "Salt and pepper to taste"
     ],
+    ingredientSubstitutions: {
+      "200g fresh mozzarella cheese, sliced": ["200g vegan mozzarella cheese, sliced", "200g dairy-free cheese alternative"],
+      "500g pizza dough": ["500g gluten-free pizza dough", "500g cauliflower pizza crust"]
+    },
     instructions: [
       "Preheat the oven to 475°F (245°C).",
       "Roll out the pizza dough on a floured surface to your desired thickness.",
@@ -42,7 +49,9 @@ export const recipes: Recipe[] = [
       "Slice and serve hot."
     ],
     category: "Italian",
-    featured: true
+    mealTime: "Dinner",
+    featured: true,
+    likes: 24
   },
   {
     id: "2",
@@ -63,6 +72,10 @@ export const recipes: Recipe[] = [
       "Salt and pepper to taste",
       "Toasted pumpkin seeds for garnish"
     ],
+    ingredientSubstitutions: {
+      "1/2 cup heavy cream": ["1/2 cup coconut cream", "1/2 cup cashew cream"],
+      "4 cups vegetable broth": ["4 cups chicken broth", "4 cups bone broth"]
+    },
     instructions: [
       "Preheat the oven to 400°F (200°C).",
       "Toss butternut squash cubes with 1 tablespoon olive oil, salt, and pepper.",
@@ -78,7 +91,9 @@ export const recipes: Recipe[] = [
       "Serve hot, garnished with toasted pumpkin seeds."
     ],
     category: "Soups",
-    featured: true
+    mealTime: "Lunch",
+    featured: true,
+    likes: 16
   },
   {
     id: "3",
@@ -100,6 +115,11 @@ export const recipes: Recipe[] = [
       "Powdered sugar for dusting",
       "Vanilla ice cream for serving (optional)"
     ],
+    ingredientSubstitutions: {
+      "113g dark chocolate, chopped": ["113g dairy-free dark chocolate, chopped", "113g carob chips"],
+      "113g unsalted butter": ["113g coconut oil", "113g vegan butter"],
+      "30g all-purpose flour": ["30g gluten-free flour blend", "30g almond flour"]
+    },
     instructions: [
       "Preheat the oven to 425°F (220°C). Butter and lightly flour four 6-ounce ramekins.",
       "In a microwave-safe bowl, combine the chocolate and butter. Microwave in 30-second intervals, stirring between each, until melted and smooth.",
@@ -112,7 +132,9 @@ export const recipes: Recipe[] = [
       "Dust with powdered sugar and serve immediately, with vanilla ice cream if desired."
     ],
     category: "Desserts",
-    featured: true
+    mealTime: "Dessert",
+    featured: true,
+    likes: 32
   },
   {
     id: "4",
@@ -134,6 +156,10 @@ export const recipes: Recipe[] = [
       "1 teaspoon dried oregano",
       "Salt and freshly ground black pepper to taste"
     ],
+    ingredientSubstitutions: {
+      "200g feta cheese, cubed": ["200g plant-based feta alternative", "200g firm tofu, crumbled"],
+      "1 red onion, thinly sliced": ["1 shallot, thinly sliced", "3 green onions, chopped"]
+    },
     instructions: [
       "In a large bowl, combine the cucumber, tomatoes, red onion, and green bell pepper.",
       "Add the feta cheese and olives to the bowl.",
@@ -142,7 +168,9 @@ export const recipes: Recipe[] = [
       "Let the salad sit for about 10 minutes before serving to allow the flavors to meld.",
       "Serve chilled or at room temperature."
     ],
-    category: "Salads"
+    category: "Salads",
+    mealTime: "Lunch",
+    likes: 19
   },
   {
     id: "5",
@@ -165,6 +193,11 @@ export const recipes: Recipe[] = [
       "1 teaspoon sugar",
       "Cooked jasmine rice for serving"
     ],
+    ingredientSubstitutions: {
+      "500g boneless chicken thighs, thinly sliced": ["500g firm tofu, pressed and cubed", "500g tempeh, sliced"],
+      "1 tablespoon oyster sauce": ["1 tablespoon vegetarian oyster sauce", "1 tablespoon hoisin sauce"],
+      "1 teaspoon fish sauce": ["1 tablespoon soy sauce", "1 tablespoon coconut aminos"]
+    },
     instructions: [
       "Heat the vegetable oil in a large wok or skillet over high heat.",
       "Add the minced garlic and chili peppers, stir-fry for 30 seconds until fragrant.",
@@ -176,7 +209,9 @@ export const recipes: Recipe[] = [
       "Remove from heat and stir in the fresh basil leaves until wilted.",
       "Serve hot over jasmine rice."
     ],
-    category: "Asian"
+    category: "Asian",
+    mealTime: "Dinner",
+    likes: 28
   },
   {
     id: "6",
@@ -195,6 +230,11 @@ export const recipes: Recipe[] = [
       "300g cold unsalted butter",
       "1 egg, beaten (for egg wash)"
     ],
+    ingredientSubstitutions: {
+      "350ml cold milk": ["350ml almond milk", "350ml oat milk"],
+      "300g cold unsalted butter": ["300g vegan butter", "300g plant-based margarine"],
+      "500g all-purpose flour, plus extra for dusting": ["500g pastry flour", "500g bread flour"]
+    },
     instructions: [
       "In a large bowl, mix the flour, salt, sugar, and yeast.",
       "Gradually add the cold milk and mix until a dough forms.",
@@ -212,8 +252,19 @@ export const recipes: Recipe[] = [
       "Preheat the oven to 400°F (200°C).",
       "Brush the croissants with egg wash again and bake for 15-20 minutes until golden brown."
     ],
-    category: "Baking"
+    category: "Baking",
+    mealTime: "Breakfast",
+    likes: 21
   }
+];
+
+export const mealTimes = [
+  "All",
+  "Breakfast",
+  "Lunch",
+  "Dinner",
+  "Snack",
+  "Dessert"
 ];
 
 export const categories = [

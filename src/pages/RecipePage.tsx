@@ -59,6 +59,7 @@ const RecipePage = () => {
             <div className="md:col-span-1">
               <IngredientList 
                 ingredients={recipe.ingredients} 
+                ingredientSubstitutions={recipe.ingredientSubstitutions}
                 servings={recipe.servings} 
               />
             </div>
