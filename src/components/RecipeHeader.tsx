@@ -2,6 +2,7 @@
 import { Recipe } from "@/data/recipes";
 import { Clock, Users } from "lucide-react";
 import LikeButton from "./LikeButton";
+import SaveButton from "./SaveButton";
 import NutritionalInfo from "./NutritionalInfo";
 
 interface RecipeHeaderProps {
@@ -22,13 +23,25 @@ const RecipeHeader = ({ recipe }: RecipeHeaderProps) => {
             {recipe.category}
           </span>
         </div>
+        <div className="absolute top-4 left-4">
+          <span className={`category-pill ${
+            recipe.difficulty === "Easy" ? "bg-green-100 text-green-800" : 
+            recipe.difficulty === "Medium" ? "bg-yellow-100 text-yellow-800" : 
+            "bg-red-100 text-red-800"
+          }`}>
+            {recipe.difficulty}
+          </span>
+        </div>
       </div>
       
       <div className="flex justify-between items-start">
         <h1 className="text-3xl md:text-4xl font-heading font-bold text-recipe-secondary mb-4">
           {recipe.title}
         </h1>
-        <LikeButton recipe={recipe} size="lg" />
+        <div className="flex gap-3">
+          <SaveButton recipe={recipe} size="lg" />
+          <LikeButton recipe={recipe} size="lg" />
+        </div>
       </div>
       
       <p className="text-lg text-recipe-dark/90 mb-6">{recipe.description}</p>

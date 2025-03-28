@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Recipe } from "@/data/recipes";
 import LikeButton from "./LikeButton";
+import SaveButton from "./SaveButton";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -28,7 +29,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
           <h3 className="text-xl font-heading font-semibold text-recipe-secondary">
             {recipe.title}
           </h3>
-          <LikeButton recipe={recipe} />
+          <div className="flex gap-2">
+            <SaveButton recipe={recipe} />
+            <LikeButton recipe={recipe} />
+          </div>
         </div>
         
         <div className="flex items-center text-sm text-recipe-dark/70 mb-3">
@@ -36,9 +40,18 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
           <span>Cook: {recipe.cookTime} min</span>
         </div>
         
-        <p className="text-recipe-dark/90 line-clamp-2">
-          {recipe.description}
-        </p>
+        <div className="flex justify-between items-center mb-3">
+          <p className="text-recipe-dark/90 line-clamp-2">
+            {recipe.description}
+          </p>
+          <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+            recipe.difficulty === "Easy" ? "bg-green-100 text-green-800" : 
+            recipe.difficulty === "Medium" ? "bg-yellow-100 text-yellow-800" : 
+            "bg-red-100 text-red-800"
+          }`}>
+            {recipe.difficulty}
+          </span>
+        </div>
       </div>
     </Link>
   );

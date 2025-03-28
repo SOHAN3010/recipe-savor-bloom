@@ -1,16 +1,18 @@
 
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { recipes, mealTimes } from "@/data/recipes";
+import { useLocation, Link } from "react-router-dom";
+import { recipes, mealTimes, difficulties } from "@/data/recipes";
 import CategoryFilter from "@/components/CategoryFilter";
 import RecipeCard from "@/components/RecipeCard";
 import FeaturedRecipes from "@/components/FeaturedRecipes";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { BookmarkIcon } from "lucide-react";
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeMealTime, setActiveMealTime] = useState("All");
+  const [activeDifficulty, setActiveDifficulty] = useState("All");
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
   const location = useLocation();
 
@@ -40,8 +42,13 @@ const Index = () => {
       filtered = filtered.filter(recipe => recipe.mealTime === activeMealTime);
     }
     
+    // Apply difficulty filter unless it's "All"
+    if (activeDifficulty !== "All") {
+      filtered = filtered.filter(recipe => recipe.difficulty === activeDifficulty);
+    }
+    
     setFilteredRecipes(filtered);
-  }, [activeCategory, activeMealTime, location.search]);
+  }, [activeCategory, activeMealTime, activeDifficulty, location.search]);
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -49,6 +56,10 @@ const Index = () => {
 
   const handleMealTimeChange = (mealTime: string) => {
     setActiveMealTime(mealTime);
+  };
+
+  const handleDifficultyChange = (difficulty: string) => {
+    setActiveDifficulty(difficulty);
   };
 
   return (
@@ -66,6 +77,13 @@ const Index = () => {
           </p>
         </div>
         
+        <div className="flex justify-end mb-8">
+          <Link to="/saved-recipes" className="flex items-center gap-2 button-outline">
+            <BookmarkIcon size={16} />
+            <span>Saved Recipes</span>
+          </Link>
+        </div>
+        
         <FeaturedRecipes recipes={recipes} />
         
         <div className="mb-6 flex justify-between items-center">
@@ -78,12 +96,70 @@ const Index = () => {
           </p>
         </div>
         
-        <CategoryFilter 
-          activeCategory={activeCategory} 
-          activeMealTime={activeMealTime}
-          onCategoryChange={handleCategoryChange} 
-          onMealTimeChange={handleMealTimeChange}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div>
+            <h3 className="text-lg font-medium mb-2">Categories</h3>
+            <div className="flex flex-wrap gap-2">
+              {["All", ...recipes.map(r => r.category).filter((c, i, self) => self.indexOf(c) === i)].map(category => (
+                <button 
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={`px-3 py-1 rounded-full text-sm ${
+                    activeCategory === category 
+                      ? "bg-recipe-primary text-white" 
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-medium mb-2">Meal Times</h3>
+            <div className="flex flex-wrap gap-2">
+              {mealTimes.map(mealTime => (
+                <button 
+                  key={mealTime}
+                  onClick={() => handleMealTimeChange(mealTime)}
+                  className={`px-3 py-1 rounded-full text-sm ${
+                    activeMealTime === mealTime 
+                      ? "bg-recipe-secondary text-white" 
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {mealTime}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-medium mb-2">Difficulty</h3>
+            <div className="flex flex-wrap gap-2">
+              {difficulties.map(difficulty => (
+                <button 
+                  key={difficulty}
+                  onClick={() => handleDifficultyChange(difficulty)}
+                  className={`px-3 py-1 rounded-full text-sm ${
+                    activeDifficulty === difficulty 
+                      ? difficulty === "Easy" 
+                        ? "bg-green-500 text-white"
+                        : difficulty === "Medium"
+                          ? "bg-yellow-500 text-white"
+                          : difficulty === "Hard" 
+                            ? "bg-red-500 text-white"
+                            : "bg-blue-500 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {difficulty}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
         
         {filteredRecipes.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -98,6 +174,7 @@ const Index = () => {
               onClick={() => {
                 setActiveCategory("All");
                 setActiveMealTime("All");
+                setActiveDifficulty("All");
               }}
               className="button-primary"
             >

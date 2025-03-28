@@ -11,6 +11,7 @@ export interface Recipe {
   instructions: string[];
   category: string;
   mealTime?: "Breakfast" | "Lunch" | "Dinner" | "Snack" | "Dessert";
+  difficulty: "Easy" | "Medium" | "Hard";
   featured?: boolean;
   likes?: number;
   nutritionalInfo?: {
@@ -30,6 +31,7 @@ export const recipes: Recipe[] = [
     prepTime: 30,
     cookTime: 15,
     servings: 4,
+    difficulty: "Easy",
     ingredients: [
       "500g pizza dough",
       "1 cup tomato sauce",
@@ -72,6 +74,7 @@ export const recipes: Recipe[] = [
     prepTime: 20,
     cookTime: 40,
     servings: 6,
+    difficulty: "Medium",
     ingredients: [
       "2 lbs butternut squash, peeled and cubed",
       "1 onion, chopped",
@@ -120,6 +123,7 @@ export const recipes: Recipe[] = [
     prepTime: 15,
     cookTime: 12,
     servings: 4,
+    difficulty: "Medium",
     ingredients: [
       "113g dark chocolate, chopped",
       "113g unsalted butter",
@@ -167,6 +171,7 @@ export const recipes: Recipe[] = [
     prepTime: 15,
     cookTime: 0,
     servings: 4,
+    difficulty: "Easy",
     ingredients: [
       "1 large cucumber, diced",
       "4 large tomatoes, diced",
@@ -209,6 +214,7 @@ export const recipes: Recipe[] = [
     prepTime: 15,
     cookTime: 10,
     servings: 4,
+    difficulty: "Medium",
     ingredients: [
       "500g boneless chicken thighs, thinly sliced",
       "4 cloves garlic, minced",
@@ -256,6 +262,7 @@ export const recipes: Recipe[] = [
     prepTime: 60,
     cookTime: 15,
     servings: 12,
+    difficulty: "Hard",
     ingredients: [
       "500g all-purpose flour, plus extra for dusting",
       "10g salt",
@@ -317,3 +324,5 @@ export const categories = [
   "Asian",
   "Baking"
 ];
+
+export const difficulties = ["All", "Easy", "Medium", "Hard"];
