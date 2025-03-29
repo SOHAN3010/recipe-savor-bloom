@@ -5,13 +5,20 @@ import RecipeHeader from "@/components/RecipeHeader";
 import IngredientList from "@/components/IngredientList";
 import InstructionSteps from "@/components/InstructionSteps";
 import PrintButton from "@/components/PrintButton";
+import RecipeComments from "@/components/RecipeComments";
+import RecipeRating from "@/components/RecipeRating";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ArrowLeft } from "lucide-react";
 
 const RecipePage = () => {
   const { id } = useParams();
-  const recipe = recipes.find(r => r.id === id);
+  // Get recipe from both predefined recipes and user uploaded recipes
+  const allRecipes = [
+    ...recipes,
+    ...JSON.parse(localStorage.getItem("userRecipes") || "[]")
+  ];
+  const recipe = allRecipes.find(r => r.id === id);
   
   if (!recipe) {
     return (
@@ -50,6 +57,10 @@ const RecipePage = () => {
         <div className="max-w-3xl mx-auto recipe-container">
           <RecipeHeader recipe={recipe} />
           
+          <div className="mb-6 no-print">
+            <RecipeRating recipe={recipe} size="lg" />
+          </div>
+          
           <div className="print-only mb-4">
             <p><strong>Total Time:</strong> {recipe.prepTime + recipe.cookTime} minutes</p>
             <p><strong>Servings:</strong> {recipe.servings}</p>
@@ -68,6 +79,8 @@ const RecipePage = () => {
               <InstructionSteps instructions={recipe.instructions} />
             </div>
           </div>
+          
+          <RecipeComments recipeId={recipe.id} />
         </div>
         
         <PrintButton />
