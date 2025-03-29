@@ -28,14 +28,15 @@ const IngredientList = ({
     setServingCount(newValue);
   };
   
-  // Simplified ingredient scaling - assumes numbers at the beginning of strings
+  // Updated to limit decimal places to 3
   const scaleIngredient = (ingredient: string): string => {
     if (servingCount === servings) return ingredient;
     
     return ingredient.replace(/^(\d+(\.\d+)?)/, (match) => {
       const originalValue = parseFloat(match);
       const scaledValue = (originalValue * servingCount) / servings;
-      return scaledValue.toString();
+      // Round to 3 decimal places
+      return scaledValue.toFixed(3);
     });
   };
   
@@ -96,3 +97,4 @@ const IngredientList = ({
 };
 
 export default IngredientList;
+
