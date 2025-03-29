@@ -5,7 +5,7 @@ import { Recipe } from "@/data/recipes";
 import { toast } from "sonner";
 
 interface RecipeRatingProps {
-  recipe: Recipe;
+  recipe: Recipe & { rating?: number };
   size?: "sm" | "md" | "lg";
 }
 

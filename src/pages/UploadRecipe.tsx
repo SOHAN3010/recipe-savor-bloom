@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -26,6 +25,10 @@ const formSchema = z.object({
   servings: z.number().min(1, "Servings must be at least 1"),
   imageUrl: z.string().url("Please enter a valid image URL"),
 });
+
+type ExtendedRecipe = Recipe & {
+  rating?: number;
+};
 
 const UploadRecipe = () => {
   const navigate = useNavigate();
@@ -85,7 +88,6 @@ const UploadRecipe = () => {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Filter out empty ingredients and instructions
     const filteredIngredients = ingredients.filter(item => item.trim() !== "");
     const filteredInstructions = instructions.filter(item => item.trim() !== "");
 
@@ -99,8 +101,7 @@ const UploadRecipe = () => {
       return;
     }
 
-    // Create new recipe object
-    const newRecipe: Recipe = {
+    const newRecipe: ExtendedRecipe = {
       id: uuidv4(),
       title: values.title,
       description: values.description,
@@ -113,16 +114,13 @@ const UploadRecipe = () => {
       ingredients: filteredIngredients,
       instructions: filteredInstructions,
       likes: 0,
-      rating: 0,
       featured: false,
       nutritionalInfo: nutritionalInfo.calories > 0 ? nutritionalInfo : undefined,
     };
 
-    // Get existing user recipes from localStorage or initialize with empty array
     const userRecipes = JSON.parse(localStorage.getItem("userRecipes") || "[]");
     userRecipes.push(newRecipe);
     
-    // Update localStorage
     localStorage.setItem("userRecipes", JSON.stringify(userRecipes));
     
     toast.success("Recipe uploaded successfully!");
