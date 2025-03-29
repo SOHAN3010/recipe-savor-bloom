@@ -39,7 +39,7 @@ const RecipeHeader = ({ recipe }: RecipeHeaderProps) => {
           {recipe.title}
         </h1>
         <div className="flex gap-3">
-          <SaveButton recipe={recipe} size="lg" />
+          <SaveButton recipeId={recipe.id} size="lg" />
           <LikeButton recipe={recipe} size="lg" />
         </div>
       </div>
