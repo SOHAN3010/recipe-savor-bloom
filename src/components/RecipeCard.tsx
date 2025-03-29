@@ -44,7 +44,7 @@ const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
           </div>
           
           <div className="flex items-center gap-2">
-            {onDelete && (
+            {onDelete && recipe.userId && (
               <Button 
                 variant="outline" 
                 size="sm" 

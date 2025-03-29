@@ -16,7 +16,7 @@ type ExtendedRecipe = Recipe & {
 };
 
 const Index = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState<string>("Italian");
   const [activeMealTime, setActiveMealTime] = useState("All");
   const [activeDifficulty, setActiveDifficulty] = useState("All");
   const [filteredRecipes, setFilteredRecipes] = useState<ExtendedRecipe[]>([]);
@@ -48,7 +48,8 @@ const Index = () => {
         recipe => 
           recipe.title.toLowerCase().includes(query) ||
           recipe.description.toLowerCase().includes(query) ||
-          recipe.category.toLowerCase().includes(query)
+          recipe.category.toLowerCase().includes(query) ||
+          recipe.ingredients.some(ingredient => ingredient.toLowerCase().includes(query))
       );
     }
     
@@ -152,7 +153,7 @@ const Index = () => {
           <div>
             <h3 className="text-lg font-medium mb-2">Categories</h3>
             <div className="flex flex-wrap gap-2">
-              {["All", ...allRecipes.map(r => r.category).filter((c, i, self) => self.indexOf(c) === i)].map(category => (
+              {[...allRecipes.map(r => r.category).filter((c, i, self) => self.indexOf(c) === i)].map(category => (
                 <button 
                   key={category}
                   onClick={() => handleCategoryChange(category)}
@@ -212,6 +213,14 @@ const Index = () => {
             </div>
           </div>
         </div>
+        
+        {searchTerm && (
+          <div className="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-100">
+            <p className="text-recipe-secondary">
+              Search results for: <span className="font-semibold">"{searchTerm}"</span>
+            </p>
+          </div>
+        )}
         
         {filteredRecipes.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

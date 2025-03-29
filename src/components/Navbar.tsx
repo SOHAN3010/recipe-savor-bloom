@@ -27,11 +27,9 @@ const Navbar = ({
     e.preventDefault();
     if (searchTerm.trim()) {
       if (isHomePage && onSearch) {
-        // If we're on the home page and have an onSearch handler, use it
         onSearch(searchTerm);
         toast.success(`Searching for "${searchTerm}"`);
       } else {
-        // Otherwise navigate to home with a search query
         navigate(`/?search=${encodeURIComponent(searchTerm)}`);
         toast.success(`Searching for "${searchTerm}"`);
       }
@@ -49,14 +47,12 @@ const Navbar = ({
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-xl font-heading font-bold text-recipe-primary">
+            <span className="text-2xl md:text-3xl font-heading font-bold text-recipe-primary">
               Tasty<span className="text-recipe-secondary">Bytes</span>
             </span>
           </Link>
           
-          {/* Search and Actions */}
           <div className="flex items-center gap-4">
             <form onSubmit={handleSearchSubmit} className="hidden md:flex">
               <div className="relative">
@@ -86,7 +82,6 @@ const Navbar = ({
               </Link>
             </div>
             
-            {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2"
@@ -101,7 +96,6 @@ const Navbar = ({
           </div>
         </div>
         
-        {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <form onSubmit={handleSearchSubmit} className="mb-4">
