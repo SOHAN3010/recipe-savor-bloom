@@ -59,7 +59,7 @@ const RecipeLeaderboard = ({ recipes, limit = 3 }: RecipeLeaderboardProps) => {
                 <span>{recipe.likes || 0} likes</span>
               </div>
               
-              {recipe.rating && (
+              {recipe.rating !== undefined && (
                 <div className="mt-2 text-sm text-recipe-dark/70">
                   Rating: {recipe.rating.toFixed(1)} / 5
                 </div>

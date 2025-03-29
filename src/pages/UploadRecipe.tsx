@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -46,7 +47,7 @@ const UploadRecipe = () => {
     defaultValues: {
       title: "",
       description: "",
-      category: categories[0],
+      category: categories.filter(cat => cat !== "All")[0],
       difficulty: "Medium",
       prepTime: 10,
       cookTime: 20,
@@ -116,15 +117,23 @@ const UploadRecipe = () => {
       likes: 0,
       featured: false,
       nutritionalInfo: nutritionalInfo.calories > 0 ? nutritionalInfo : undefined,
+      mealTime: undefined,
+      rating: 0,
     };
 
-    const userRecipes = JSON.parse(localStorage.getItem("userRecipes") || "[]");
+    // Get existing user recipes
+    const userRecipes: ExtendedRecipe[] = JSON.parse(localStorage.getItem("userRecipes") || "[]");
     userRecipes.push(newRecipe);
     
+    // Save updated recipes to localStorage
     localStorage.setItem("userRecipes", JSON.stringify(userRecipes));
     
     toast.success("Recipe uploaded successfully!");
-    navigate("/");
+    
+    // Navigate back to home page after a short delay
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
   };
 
   return (

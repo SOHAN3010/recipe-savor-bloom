@@ -1,34 +1,53 @@
 
 import { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { recipes, mealTimes, difficulties } from "@/data/recipes";
-import CategoryFilter from "@/components/CategoryFilter";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import { recipes as defaultRecipes, mealTimes, difficulties } from "@/data/recipes";
 import RecipeCard from "@/components/RecipeCard";
 import FeaturedRecipes from "@/components/FeaturedRecipes";
+import RecipeLeaderboard from "@/components/RecipeLeaderboard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BookmarkIcon } from "lucide-react";
+import { Recipe } from "@/data/recipes";
+
+type ExtendedRecipe = Recipe & {
+  rating?: number;
+};
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeMealTime, setActiveMealTime] = useState("All");
   const [activeDifficulty, setActiveDifficulty] = useState("All");
-  const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+  const [filteredRecipes, setFilteredRecipes] = useState<ExtendedRecipe[]>([]);
+  const [allRecipes, setAllRecipes] = useState<ExtendedRecipe[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Load all recipes, including user uploaded ones
+  useEffect(() => {
+    // Get user recipes from localStorage
+    const userRecipes: ExtendedRecipe[] = JSON.parse(localStorage.getItem("userRecipes") || "[]");
+    
+    // Combine default recipes with user recipes
+    const combined = [...defaultRecipes, ...userRecipes];
+    setAllRecipes(combined);
+  }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const searchQuery = searchParams.get("search")?.toLowerCase() || "";
+    const query = searchParams.get("search")?.toLowerCase() || "";
+    setSearchTerm(query);
     
-    let filtered = recipes;
+    let filtered = allRecipes;
     
     // Apply search filter if there's a query
-    if (searchQuery) {
-      filtered = recipes.filter(
+    if (query) {
+      filtered = allRecipes.filter(
         recipe => 
-          recipe.title.toLowerCase().includes(searchQuery) ||
-          recipe.description.toLowerCase().includes(searchQuery) ||
-          recipe.category.toLowerCase().includes(searchQuery)
+          recipe.title.toLowerCase().includes(query) ||
+          recipe.description.toLowerCase().includes(query) ||
+          recipe.category.toLowerCase().includes(query)
       );
     }
     
@@ -48,7 +67,17 @@ const Index = () => {
     }
     
     setFilteredRecipes(filtered);
-  }, [activeCategory, activeMealTime, activeDifficulty, location.search]);
+  }, [activeCategory, activeMealTime, activeDifficulty, location.search, allRecipes]);
+
+  const handleSearch = (term: string) => {
+    if (term.trim()) {
+      // Update URL with search parameter
+      navigate(`/?search=${encodeURIComponent(term)}`);
+    } else {
+      // Clear search if term is empty
+      navigate('/');
+    }
+  };
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -64,7 +93,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar 
+        onSearch={handleSearch}
+        onCategoryChange={handleCategoryChange}
+        selectedCategory={activeCategory}
+      />
       
       <main className="container mx-auto px-4 py-8 flex-grow">
         <div className="mb-12 text-center">
@@ -84,7 +117,9 @@ const Index = () => {
           </Link>
         </div>
         
-        <FeaturedRecipes recipes={recipes} />
+        <FeaturedRecipes recipes={allRecipes} />
+        
+        <RecipeLeaderboard recipes={allRecipes} />
         
         <div className="mb-6 flex justify-between items-center">
           <h2 className="text-2xl font-heading font-bold text-recipe-secondary">
@@ -100,7 +135,7 @@ const Index = () => {
           <div>
             <h3 className="text-lg font-medium mb-2">Categories</h3>
             <div className="flex flex-wrap gap-2">
-              {["All", ...recipes.map(r => r.category).filter((c, i, self) => self.indexOf(c) === i)].map(category => (
+              {["All", ...allRecipes.map(r => r.category).filter((c, i, self) => self.indexOf(c) === i)].map(category => (
                 <button 
                   key={category}
                   onClick={() => handleCategoryChange(category)}
@@ -175,6 +210,7 @@ const Index = () => {
                 setActiveCategory("All");
                 setActiveMealTime("All");
                 setActiveDifficulty("All");
+                navigate('/');
               }}
               className="button-primary"
             >

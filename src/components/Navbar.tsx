@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, X, Upload, BookmarkCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { categories } from "@/data/recipes";
+import { toast } from "sonner";
 
 interface NavbarProps {
   onSearch?: (term: string) => void;
@@ -19,13 +20,21 @@ const Navbar = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
   
   const isHomePage = location.pathname === "/";
   
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (onSearch) {
-      onSearch(searchTerm);
+    if (searchTerm.trim()) {
+      if (isHomePage && onSearch) {
+        // If we're on the home page and have an onSearch handler, use it
+        onSearch(searchTerm);
+      } else {
+        // Otherwise navigate to home with a search query
+        navigate(`/?search=${encodeURIComponent(searchTerm)}`);
+        toast.success(`Searching for "${searchTerm}"`);
+      }
     }
   };
   
@@ -70,20 +79,18 @@ const Navbar = ({
           
           {/* Search and Actions */}
           <div className="flex items-center gap-4">
-            {isHomePage && onSearch && (
-              <form onSubmit={handleSearchSubmit} className="hidden md:flex">
-                <div className="relative">
-                  <Input
-                    type="text"
-                    placeholder="Search recipes..."
-                    className="w-64 pl-9"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <Search className="absolute left-2.5 top-2.5 h-5 w-5 text-gray-400" />
-                </div>
-              </form>
-            )}
+            <form onSubmit={handleSearchSubmit} className="hidden md:flex">
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Search recipes..."
+                  className="w-64 pl-9"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Search className="absolute left-2.5 top-2.5 h-5 w-5 text-gray-400" />
+              </div>
+            </form>
             
             <div className="hidden md:flex gap-2">
               <Link to="/saved-recipes">
@@ -118,20 +125,18 @@ const Navbar = ({
         {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
-            {isHomePage && onSearch && (
-              <form onSubmit={handleSearchSubmit} className="mb-4">
-                <div className="relative">
-                  <Input
-                    type="text"
-                    placeholder="Search recipes..."
-                    className="w-full pl-9"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <Search className="absolute left-2.5 top-2.5 h-5 w-5 text-gray-400" />
-                </div>
-              </form>
-            )}
+            <form onSubmit={handleSearchSubmit} className="mb-4">
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Search recipes..."
+                  className="w-full pl-9"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Search className="absolute left-2.5 top-2.5 h-5 w-5 text-gray-400" />
+              </div>
+            </form>
             
             <div className="flex flex-col space-y-2 mb-4">
               <Link 
