@@ -5,7 +5,7 @@ import { Recipe } from "@/data/recipes";
 import { Trophy, Heart } from "lucide-react";
 
 interface RecipeLeaderboardProps {
-  recipes: Recipe[];
+  recipes: (Recipe & { rating?: number })[];
   limit?: number;
 }
 

@@ -5,12 +5,12 @@ import { Recipe, categories } from "@/data/recipes";
 import { Heart } from "lucide-react";
 
 interface CategoryLeaderboardProps {
-  recipes: Recipe[];
+  recipes: (Recipe & { rating?: number })[];
 }
 
 const CategoryLeaderboard = ({ recipes }: CategoryLeaderboardProps) => {
   const topRecipesByCategory = useMemo(() => {
-    const result: { [category: string]: Recipe | null } = {};
+    const result: { [category: string]: (Recipe & { rating?: number }) | null } = {};
     
     // Filter out "All" category
     const actualCategories = categories.filter(cat => cat !== "All");
@@ -69,6 +69,12 @@ const CategoryLeaderboard = ({ recipes }: CategoryLeaderboardProps) => {
                     <Heart className="w-4 h-4 mr-1 fill-current" />
                     <span>{recipe.likes || 0} likes</span>
                   </div>
+                  
+                  {recipe.rating && (
+                    <div className="mt-2 text-sm text-recipe-dark/70">
+                      Rating: {recipe.rating.toFixed(1)} / 5
+                    </div>
+                  )}
                 </div>
               </Link>
             ) : (
