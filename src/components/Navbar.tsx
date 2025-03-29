@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, X, Upload, BookmarkCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { categories } from "@/data/recipes";
 import { toast } from "sonner";
 
 interface NavbarProps {
@@ -30,6 +29,7 @@ const Navbar = ({
       if (isHomePage && onSearch) {
         // If we're on the home page and have an onSearch handler, use it
         onSearch(searchTerm);
+        toast.success(`Searching for "${searchTerm}"`);
       } else {
         // Otherwise navigate to home with a search query
         navigate(`/?search=${encodeURIComponent(searchTerm)}`);
@@ -55,27 +55,6 @@ const Navbar = ({
               Tasty<span className="text-recipe-secondary">Bytes</span>
             </span>
           </Link>
-          
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-4">
-            {isHomePage && (
-              <div className="flex items-center space-x-4">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => handleCategoryClick(category)}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                      selectedCategory === category
-                        ? "bg-recipe-primary text-white"
-                        : "text-recipe-dark hover:bg-gray-100"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            )}
-          </nav>
           
           {/* Search and Actions */}
           <div className="flex items-center gap-4">
@@ -156,24 +135,6 @@ const Navbar = ({
                 <span>Upload Recipe</span>
               </Link>
             </div>
-            
-            {isHomePage && (
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => handleCategoryClick(category)}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                      selectedCategory === category
-                        ? "bg-recipe-primary text-white"
-                        : "text-recipe-dark hover:bg-gray-100"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         )}
       </div>

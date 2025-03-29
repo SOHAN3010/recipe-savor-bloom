@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { recipes as defaultRecipes, mealTimes, difficulties } from "@/data/recipes";
 import RecipeCard from "@/components/RecipeCard";
-import FeaturedRecipes from "@/components/FeaturedRecipes";
 import RecipeLeaderboard from "@/components/RecipeLeaderboard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -91,6 +90,24 @@ const Index = () => {
     setActiveDifficulty(difficulty);
   };
 
+  const handleDeleteRecipe = (recipeId: string) => {
+    // Get current user recipes from localStorage
+    const userRecipes: ExtendedRecipe[] = JSON.parse(localStorage.getItem("userRecipes") || "[]");
+    
+    // Filter out the recipe to delete
+    const updatedUserRecipes = userRecipes.filter(recipe => recipe.id !== recipeId);
+    
+    // Save updated recipes back to localStorage
+    localStorage.setItem("userRecipes", JSON.stringify(updatedUserRecipes));
+    
+    // Update allRecipes state to reflect the change
+    const updatedAllRecipes = allRecipes.filter(recipe => recipe.id !== recipeId);
+    setAllRecipes(updatedAllRecipes);
+    
+    // Toast notification
+    toast.success("Recipe deleted successfully");
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar 
@@ -116,8 +133,6 @@ const Index = () => {
             <span>Saved Recipes</span>
           </Link>
         </div>
-        
-        <FeaturedRecipes recipes={allRecipes} />
         
         <RecipeLeaderboard recipes={allRecipes} />
         
@@ -199,7 +214,11 @@ const Index = () => {
         {filteredRecipes.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRecipes.map(recipe => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
+              <RecipeCard 
+                key={recipe.id} 
+                recipe={recipe} 
+                onDelete={recipe.userId ? () => handleDeleteRecipe(recipe.id) : undefined}
+              />
             ))}
           </div>
         ) : (
