@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,10 @@ import { toast } from "sonner";
 
 const placeholderImage = "/placeholder.svg";
 
+// Define the allowed values for mealTime and difficulty
+type MealTimeType = "Breakfast" | "Lunch" | "Dinner" | "Snack" | "Dessert";
+type DifficultyType = "Easy" | "Medium" | "Hard";
+
 const UploadRecipe = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -27,13 +30,13 @@ const UploadRecipe = () => {
     description: "",
     customCategory: "",
     category: "",
-    mealTime: "",
-    difficulty: "",
+    mealTime: "" as MealTimeType | "",
+    difficulty: "" as DifficultyType | "",
     prepTime: 15,
     cookTime: 30,
     servings: 4,
-    ingredients: [],
-    steps: [],
+    ingredients: [] as string[],
+    steps: [] as string[],
     imageUrl: placeholderImage,
   });
   
@@ -48,7 +51,19 @@ const UploadRecipe = () => {
   };
   
   const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
+    if (name === "mealTime") {
+      // Validate mealTime
+      if (mealTimes.filter(t => t !== "All").includes(value as MealTimeType)) {
+        setFormData({ ...formData, [name]: value as MealTimeType });
+      }
+    } else if (name === "difficulty") {
+      // Validate difficulty
+      if (difficulties.filter(d => d !== "All").includes(value as DifficultyType)) {
+        setFormData({ ...formData, [name]: value as DifficultyType });
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
   
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,13 +161,14 @@ const UploadRecipe = () => {
       title: formData.title,
       description: formData.description,
       category: getFinalCategory(),
-      mealTime: formData.mealTime,
-      difficulty: formData.difficulty,
+      mealTime: formData.mealTime as MealTimeType,
+      difficulty: formData.difficulty as DifficultyType,
       prepTime: formData.prepTime,
       cookTime: formData.cookTime,
       servings: formData.servings,
       ingredients: formData.ingredients,
       steps: formData.steps,
+      instructions: formData.steps, // Map steps to instructions
       imageUrl: formData.imageUrl,
       likes: 0,
       featured: false,

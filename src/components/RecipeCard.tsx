@@ -6,7 +6,7 @@ import { Clock, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface RecipeCardProps {
-  recipe: Recipe & { rating?: number };
+  recipe: Recipe & { rating?: number; userId?: string };
   onDelete?: () => void;
 }
 

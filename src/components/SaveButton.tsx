@@ -5,32 +5,37 @@ import { Recipe } from "@/data/recipes";
 import { toast } from "sonner";
 
 interface SaveButtonProps {
-  recipe: Recipe;
+  recipeId: string;
   size?: "sm" | "md" | "lg";
 }
 
-const SaveButton = ({ recipe, size = "md" }: SaveButtonProps) => {
+const SaveButton = ({ recipeId, size = "md" }: SaveButtonProps) => {
   const [isSaved, setIsSaved] = useState(false);
   
   // Check local storage on component mount
   useEffect(() => {
     const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
-    const isRecipeSaved = savedRecipes.some((saved: Recipe) => saved.id === recipe.id);
+    const isRecipeSaved = savedRecipes.some((saved: Recipe) => saved.id === recipeId);
     setIsSaved(isRecipeSaved);
-  }, [recipe.id]);
+  }, [recipeId]);
 
   const handleSave = () => {
     const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+    const allRecipes = JSON.parse(localStorage.getItem("userRecipes") || "[]")
+      .concat(JSON.parse(localStorage.getItem("defaultRecipes") || "[]"));
+    
+    // Find the recipe by ID
+    const recipe = allRecipes.find((r: Recipe) => r.id === recipeId);
     
     if (isSaved) {
       // Remove recipe from saved list
       const updatedSavedRecipes = savedRecipes.filter(
-        (saved: Recipe) => saved.id !== recipe.id
+        (saved: Recipe) => saved.id !== recipeId
       );
       localStorage.setItem("savedRecipes", JSON.stringify(updatedSavedRecipes));
       setIsSaved(false);
       toast.success("Recipe removed from saved recipes");
-    } else {
+    } else if (recipe) {
       // Add recipe to saved list
       savedRecipes.push(recipe);
       localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));

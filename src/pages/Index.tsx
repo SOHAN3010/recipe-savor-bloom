@@ -8,9 +8,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BookmarkIcon } from "lucide-react";
 import { Recipe } from "@/data/recipes";
+import { toast } from "sonner";
 
 type ExtendedRecipe = Recipe & {
   rating?: number;
+  userId?: string;
 };
 
 const Index = () => {

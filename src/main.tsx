@@ -6,6 +6,13 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { toast } from 'sonner'
 
+// Declare toast property on window
+declare global {
+  interface Window {
+    toast: typeof toast;
+  }
+}
+
 // Make toast available globally
 window.toast = toast;
 

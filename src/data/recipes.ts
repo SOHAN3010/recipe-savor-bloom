@@ -1,3 +1,4 @@
+
 export interface Recipe {
   id: string;
   title: string;
@@ -9,11 +10,13 @@ export interface Recipe {
   ingredients: string[];
   ingredientSubstitutions?: { [ingredient: string]: string[] };
   instructions: string[];
+  steps?: string[]; // Adding this to support user recipes
   category: string;
   mealTime?: "Breakfast" | "Lunch" | "Dinner" | "Snack" | "Dessert";
   difficulty: "Easy" | "Medium" | "Hard";
   featured?: boolean;
   likes?: number;
+  userId?: string; // Adding this to track user-created recipes
   nutritionalInfo?: {
     calories: number;
     protein: number;
