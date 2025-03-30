@@ -52,7 +52,14 @@ const DownloadButton = ({ recipe, size = "sm" }: DownloadButtonProps) => {
     // Add ingredients list
     doc.setFont("helvetica", "normal");
     recipe.ingredients.forEach(ingredient => {
-      const ingredientText = `• ${ingredient.amount} ${ingredient.unit} ${ingredient.name}`;
+      // Check if ingredient is a string (for user recipes) or an object
+      let ingredientText = '';
+      if (typeof ingredient === 'string') {
+        ingredientText = `• ${ingredient}`;
+      } else if (typeof ingredient === 'object') {
+        // For structured ingredients (amount, unit, name)
+        ingredientText = `• ${ingredient.amount || ''} ${ingredient.unit || ''} ${ingredient.name || ''}`;
+      }
       doc.text(ingredientText, margin, y);
       y += 7;
     });
@@ -113,7 +120,8 @@ const DownloadButton = ({ recipe, size = "sm" }: DownloadButtonProps) => {
         y += 7;
       }
       
-      if (recipe.nutritionalInfo.fiber) {
+      // Only display fiber if it exists
+      if (recipe.nutritionalInfo.fiber !== undefined) {
         doc.text(`Fiber: ${recipe.nutritionalInfo.fiber}g`, margin, y);
         y += 7;
       }
