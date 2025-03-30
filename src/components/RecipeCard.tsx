@@ -1,9 +1,11 @@
+
 import { Link } from "react-router-dom";
 import { Recipe } from "@/data/recipes";
 import SaveButton from "./SaveButton";
 import { Clock, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import DownloadButton from "./DownloadButton";
 
 interface RecipeCardProps {
   recipe: Recipe & { rating?: number; userId?: string };
@@ -84,6 +86,7 @@ const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
                 <span className="sr-only">Delete</span>
               </Button>
             )}
+            <DownloadButton recipe={recipe} />
             <SaveButton recipeId={recipe.id} />
           </div>
         </div>

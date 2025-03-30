@@ -4,6 +4,7 @@ import { Clock, Users } from "lucide-react";
 import LikeButton from "./LikeButton";
 import SaveButton from "./SaveButton";
 import NutritionalInfo from "./NutritionalInfo";
+import DownloadButton from "./DownloadButton";
 
 interface RecipeHeaderProps {
   recipe: Recipe;
@@ -39,6 +40,7 @@ const RecipeHeader = ({ recipe }: RecipeHeaderProps) => {
           {recipe.title}
         </h1>
         <div className="flex gap-3">
+          <DownloadButton recipe={recipe} size="lg" />
           <SaveButton recipeId={recipe.id} size="lg" />
           <LikeButton recipe={recipe} size="lg" />
         </div>
