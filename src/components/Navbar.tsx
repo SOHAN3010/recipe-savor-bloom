@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, X, Upload, BookmarkCheck } from "lucide-react";
@@ -48,7 +49,7 @@ const Navbar = ({
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center">
-            <span className="text-2xl md:text-3xl font-heading font-bold text-recipe-primary">
+            <span className="text-3xl md:text-4xl font-heading font-bold text-recipe-primary">
               Tasty<span className="text-recipe-secondary">Bytes</span>
             </span>
           </Link>

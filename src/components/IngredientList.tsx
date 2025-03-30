@@ -1,17 +1,25 @@
 
 import { useState } from "react";
 import IngredientSubstitution from "./IngredientSubstitution";
+import NutritionalInfo from "./NutritionalInfo";
 
 interface IngredientListProps {
   ingredients: string[];
   ingredientSubstitutions?: { [ingredient: string]: string[] };
   servings: number;
+  nutritionalInfo?: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
 }
 
 const IngredientList = ({ 
   ingredients, 
   ingredientSubstitutions = {}, 
-  servings 
+  servings,
+  nutritionalInfo
 }: IngredientListProps) => {
   const [checkedIngredients, setCheckedIngredients] = useState<{ [key: string]: boolean }>({});
   const [servingCount, setServingCount] = useState(servings);
@@ -39,6 +47,20 @@ const IngredientList = ({
       return scaledValue.toFixed(3);
     });
   };
+
+  // Calculate scaled nutritional info based on serving count
+  const getScaledNutritionalInfo = () => {
+    if (!nutritionalInfo) return null;
+    
+    const scaleFactor = servingCount / servings;
+    
+    return {
+      calories: Math.round(nutritionalInfo.calories * scaleFactor),
+      protein: Number((nutritionalInfo.protein * scaleFactor).toFixed(1)),
+      carbs: Number((nutritionalInfo.carbs * scaleFactor).toFixed(1)),
+      fat: Number((nutritionalInfo.fat * scaleFactor).toFixed(1))
+    };
+  };
   
   return (
     <div className="mb-8">
@@ -65,6 +87,12 @@ const IngredientList = ({
           </button>
         </div>
       </div>
+      
+      {nutritionalInfo && (
+        <div className="mb-4">
+          <NutritionalInfo {...getScaledNutritionalInfo()} />
+        </div>
+      )}
       
       <ul className="space-y-2 text-recipe-dark">
         {ingredients.map((ingredient, index) => (
@@ -97,4 +125,3 @@ const IngredientList = ({
 };
 
 export default IngredientList;
-

@@ -1,32 +1,38 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
 import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
 import RecipePage from "./pages/RecipePage";
 import SavedRecipes from "./pages/SavedRecipes";
 import UploadRecipe from "./pages/UploadRecipe";
-import NotFound from "./pages/NotFound";
+import EditRecipe from "./pages/EditRecipe";
+import { useEffect } from "react";
+import { recipes } from "./data/recipes";
 
-const queryClient = new QueryClient();
+function App() {
+  // Store default recipes in localStorage on first load
+  useEffect(() => {
+    if (!localStorage.getItem("defaultRecipes")) {
+      localStorage.setItem("defaultRecipes", JSON.stringify(recipes));
+    }
+  }, []);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/recipe/:id" element={<RecipePage />} />
-        <Route path="/saved-recipes" element={<SavedRecipes />} />
-        <Route path="/upload-recipe" element={<UploadRecipe />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  return (
+    <Router>
+      <div className="font-sans text-recipe-dark">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/recipe/:id" element={<RecipePage />} />
+          <Route path="/saved-recipes" element={<SavedRecipes />} />
+          <Route path="/upload-recipe" element={<UploadRecipe />} />
+          <Route path="/edit-recipe/:id" element={<EditRecipe />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+      <Toaster richColors position="top-center" />
+    </Router>
+  );
+}
 
 export default App;

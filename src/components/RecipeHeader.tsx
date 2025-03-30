@@ -68,17 +68,6 @@ const RecipeHeader = ({ recipe }: RecipeHeaderProps) => {
             <span>Servings: {recipe.servings}</span>
           </div>
         </div>
-        
-        {recipe.nutritionalInfo && (
-          <div>
-            <NutritionalInfo 
-              calories={recipe.nutritionalInfo.calories}
-              protein={recipe.nutritionalInfo.protein}
-              carbs={recipe.nutritionalInfo.carbs}
-              fat={recipe.nutritionalInfo.fat}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
