@@ -1,9 +1,9 @@
-
 import { Link } from "react-router-dom";
 import { Recipe } from "@/data/recipes";
 import SaveButton from "./SaveButton";
 import { Clock, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 interface RecipeCardProps {
   recipe: Recipe & { rating?: number; userId?: string };
@@ -11,6 +11,31 @@ interface RecipeCardProps {
 }
 
 const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
+  const handleDelete = () => {
+    // If there's an onDelete handler provided, use it
+    if (onDelete) {
+      onDelete();
+      return;
+    }
+    
+    // Otherwise, handle deletion logic here
+    if (recipe.userId === "user") {
+      const userRecipes = JSON.parse(localStorage.getItem("userRecipes") || "[]");
+      const updatedUserRecipes = userRecipes.filter((r: Recipe) => r.id !== recipe.id);
+      localStorage.setItem("userRecipes", JSON.stringify(updatedUserRecipes));
+      
+      // Also remove from saved recipes if it was saved
+      const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes") || "[]");
+      const updatedSavedRecipes = savedRecipes.filter((r: Recipe) => r.id !== recipe.id);
+      localStorage.setItem("savedRecipes", JSON.stringify(updatedSavedRecipes));
+      
+      toast.success("Recipe deleted successfully");
+      
+      // Dispatch event to notify other components
+      window.dispatchEvent(new Event("recipeDeleted"));
+    }
+  };
+
   return (
     <div className="recipe-card overflow-hidden rounded-lg shadow-md bg-white transition-all hover:shadow-lg">
       <Link to={`/recipe/${recipe.id}`} className="block relative">
@@ -44,7 +69,7 @@ const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
           </div>
           
           <div className="flex items-center gap-2">
-            {onDelete && recipe.userId && (
+            {recipe.userId === "user" && (
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -52,7 +77,7 @@ const RecipeCard = ({ recipe, onDelete }: RecipeCardProps) => {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  onDelete();
+                  handleDelete();
                 }}
               >
                 <Trash2 className="h-4 w-4" />

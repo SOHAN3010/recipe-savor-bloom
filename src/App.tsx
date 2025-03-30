@@ -7,6 +7,7 @@ import RecipePage from "./pages/RecipePage";
 import SavedRecipes from "./pages/SavedRecipes";
 import UploadRecipe from "./pages/UploadRecipe";
 import EditRecipe from "./pages/EditRecipe";
+import About from "./pages/About";
 import { useEffect } from "react";
 import { recipes } from "./data/recipes";
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/saved-recipes" element={<SavedRecipes />} />
           <Route path="/upload-recipe" element={<UploadRecipe />} />
           <Route path="/edit-recipe/:id" element={<EditRecipe />} />
+          <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

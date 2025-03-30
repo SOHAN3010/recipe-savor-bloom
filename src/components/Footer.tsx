@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container mx-auto">
         <div className="flex flex-wrap justify-between">
           <div className="w-full md:w-1/3 mb-6 md:mb-0">
-            <h3 className="text-xl font-heading font-semibold mb-4">SavorBloom</h3>
+            <h3 className="text-xl font-heading font-semibold mb-4">TastyBytes</h3>
             <p className="text-white/80 max-w-xs">
               Discover delicious recipes that bloom with flavor. Perfect for home cooks and food enthusiasts.
             </p>
@@ -24,11 +24,6 @@ const Footer = () => {
               <li>
                 <Link to="/about" className="text-white/80 hover:text-white transition-colors">
                   About
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-white/80 hover:text-white transition-colors">
-                  Contact
                 </Link>
               </li>
             </ul>
@@ -51,7 +46,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-white/20 mt-8 pt-6 text-center text-white/60">
-          <p>&copy; {new Date().getFullYear()} SavorBloom. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} TastyBytes. All rights reserved.</p>
         </div>
       </div>
     </footer>
